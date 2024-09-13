@@ -21,7 +21,6 @@ const Stopwatch = () => {
 
     const timeHandler = useRef(null);
 
-    // Effect for handling the timer when running
     useEffect(() => {
         if (isRunning) {
             timeHandler.current = setInterval(() => {
@@ -33,59 +32,80 @@ const Stopwatch = () => {
         }
 
         return () => {
-            clearInterval(timeHandler.current); // Cleanup on component unmount or when isRunning changes
+            clearInterval(timeHandler.current);
         };
     }, [isRunning]);
 
     return (
-        <div className="container">
-            <div>Total Time: {formatTime(totalTime)}</div>
-            <div>Current Time: {formatTime(time)}</div>
+        <div className="container mx-auto p-4 flex flex-col items-center">
+            <div className="text-2xl font-bold text-white m-5">
+                <h1>{"Let's Crack CAT 2024"}</h1>
+            </div>
+            <div className="text-xs font-bold text-white mb-20">
+                <h1>{"by Aviral Srivastava"}</h1>
+            </div>
+            <div className="text-2xl font-bold text-white bg-black w-40 h-40 flex items-center justify-center rounded-full border-4 border-gray-800 mb-4">
+                {formatTime(totalTime)}
+            </div>
 
-            <button
-                onClick={() => {
-                    setIsRunning(true); // Start the timer
-                }}
-            >
-                Start
-            </button>
+            <div className="text-xl text-black bg-gray-200 w-32 h-32 flex items-center justify-center rounded-full mb-4">
+                {formatTime(time)}
+            </div>
 
-            <button
-                onClick={() => {
-                    setIsRunning(false); // Stop the timer
-                }}
-            >
-                Stop
-            </button>
+            <div className="flex space-x-4 mb-6">
+                <button
+                    className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
+                    onClick={() => {
+                        setIsRunning(true);
+                    }}
+                >
+                    Start
+                </button>
 
-            <button
-                onClick={() => {
-                    setIsRunning(false); // Stop the timer
-                    setTimeArr((prevArr) => [...prevArr, time]); // Store the current time in timeArr
-                    setTime(0); // Reset the current time
-                    setIsRunning(true); // restart the timer
-                }}
-            >
-                Next
-            </button>
+                <button
+                    className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition"
+                    onClick={() => {
+                        setIsRunning(false);
+                    }}
+                >
+                    Stop
+                </button>
 
-            <button
-                onClick={() => {
-                    setIsRunning(false); // Stop the timer
-                    setTotalTime(0); // Reset the total time
-                    setTime(0); // Reset the current time
-                    setTimeArr([]); // Clear the stored times
-                }}
-            >
-                Reset
-            </button>
+                <button
+                    className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition"
+                    onClick={() => {
+                        setIsRunning(false);
+                        setTimeArr((prevArr) => [...prevArr, time]);
+                        setTime(0);
+                        setIsRunning(true);
+                    }}
+                >
+                    Next
+                </button>
 
-            {/* Displaying all lap times */}
-            <div>
-                <h3>{timeArr.length != 0 ? "Time Per Question:" : ""}</h3>
-                <ul>
+                <button
+                    className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition"
+                    onClick={() => {
+                        setIsRunning(false);
+                        setTotalTime(0);
+                        setTime(0);
+                        setTimeArr([]);
+                    }}
+                >
+                    Reset
+                </button>
+            </div>
+
+            <div className="w-full max-w-md text-left">
+                <h3 className="text-lg font-semibold text-gray-700 mb-2">
+                    {timeArr.length !== 0 ? "Time Per Question:" : ""}
+                </h3>
+                <ul className="space-y-2">
                     {timeArr.map((quesTime, index) => (
-                        <li key={index}>
+                        <li
+                            key={index}
+                            className="bg-gray-100 p-3 rounded-lg shadow-sm border border-gray-300 text-gray-900"
+                        >
                             {`Time for Question ${index + 1}: ${formatTime(
                                 quesTime
                             )}`}
